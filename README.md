@@ -1,7 +1,8 @@
 # Dotfiles
 
-[screenshot](./screenshots/screenshot.png)
-[screenshot1](./screenshots/screenshot1.png)
+![screenshot](./screenshots/screenshot.png)
+
+![screenshot1](./screenshots/screenshot1.png)
 
 ## Dependencies
 - **WM** :- [**`i3wm`**](https://i3wm.org/)  [**`dunst`**](https://wiki.archlinux.org/title/Dunst)  [**`betterlockscreen`**](https://github.com/betterlockscreen/betterlockscreen)  [**`scrot`**](https://github.com/dreamer/scrot)  [**`picom-arian8j2-git`**](https://aur.archlinux.org/packages/picom-arian8j2-git)  [**`brightnessctl`**](https://archlinux.org/packages/extra/x86_64/brightnessctl/)
