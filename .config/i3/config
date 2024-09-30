@@ -197,10 +197,11 @@ bindsym $mod+ z exec betterlockscreen -l
 gaps top 39
 gaps inner 5
 # smart_gaps on
-# smart_borders on
+smart_borders on
 
 for_window [class="^.*"] border pixel 1
 
 for_window [class="VirtualBox Manager" instance="VirtualBox Manager"] floating enable
+for_window [class="VirtualBox Machine" instance="VirtualBox Machine"] floating enable
 for_window [class="Nitrogen" instance="nitrogen"] floating enable
 for_window [class="Blueman-manager"] floating enable
