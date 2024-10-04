@@ -6,8 +6,6 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.colorscheme.oxocarbon-nvim" },
-  { import = "astrocommunity.colorscheme.github-nvim-theme" },
   { import = "astrocommunity.colorscheme.mellow-nvim" },
   -- import/override with your plugins folder
 }

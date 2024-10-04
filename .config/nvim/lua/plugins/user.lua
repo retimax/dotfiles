@@ -80,14 +80,12 @@ return {
       )
     end,
   },
-  -- Additional colorschemes
-  {
-    { "kepano/flexoki-neovim", name = "flexoki" },
-  },
 
+  -- Additional colorschemes
   {
     "rebelot/kanagawa.nvim",
   },
+
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",
@@ -95,5 +93,16 @@ return {
     config = function() vim.fn["mkdp#util#install"]() end,
     init = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
+  },
+
+  -- Animations
+  {
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = function(_, opts)
+      opts.scroll = {
+        enable = false,
+      }
+    end,
   },
 }
