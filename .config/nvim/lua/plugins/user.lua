@@ -6,7 +6,11 @@ return {
 
   -- == Examples of Adding Plugins ==
 
-  "andweeb/presence.nvim",
+  {
+    "IogaMaster/neocord",
+    event = "VeryLazy",
+  },
+
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
@@ -86,6 +90,14 @@ return {
     "rebelot/kanagawa.nvim",
   },
 
+  -- Live preview server
+  {
+    "barrett-ruth/live-server.nvim",
+    build = "pnpm add -g live server",
+    cmd = { "LiveServerStart", "LiveServerStop" },
+    config = true,
+  },
+
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",
@@ -93,6 +105,18 @@ return {
     config = function() vim.fn["mkdp#util#install"]() end,
     init = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
+  },
+
+  -- Latex
+  {
+    "lervag/vimtex",
+    lazy = false,
+    init = function()
+      -- Vimtext configuration goes here
+      vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_forward_search_on_start = true
+    end,
   },
 
   -- Animations
