@@ -42,7 +42,7 @@ return {
   },
 
   -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim", enabled = false },
+  { "max397574/better-escape.nvim" },
 
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
@@ -88,6 +88,17 @@ return {
   -- Additional colorschemes
   {
     "rebelot/kanagawa.nvim",
+  },
+
+  {
+    "sainnhe/gruvbox-material",
+    config = function()
+      vim.g.gruvbox_material_background = "hard" -- Opciones: 'soft', 'medium', 'hard'
+      vim.g.gruvbox_material_foreground = "original" -- Alterna entre 'original' y 'material'
+      vim.g.gruvbox_material_better_performance = 1 -- Mejora rendimiento deshabilitando características pesadas
+      vim.opt.termguicolors = true
+      vim.opt.background = "dark"
+    end,
   },
 
   -- Live preview server
