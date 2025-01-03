@@ -183,6 +183,10 @@ client.background       #dedede
 
 # applications
 bindsym $mod+Shift+f exec firefox
+bindsym $mod+b exec blueman-manager
+
+# Rofi power menu
+bindsym $mod+x exec ~/.config/rofi/powermenu/type-1/powermenu.sh
 
 # autostart
 exec_always setxkbmap latam
@@ -201,7 +205,7 @@ smart_borders on
 
 for_window [class="^.*"] border pixel 1
 
-for_window [class="VirtualBox Manager" instance="VirtualBox Manager"] floating enable
-for_window [class="VirtualBox Machine" instance="VirtualBox Machine"] floating enable
+# for_window [class="VirtualBox Manager" instance="VirtualBox Manager"] floating enable
+# for_window [class="VirtualBox Machine" instance="VirtualBox Machine"] floating enable
 for_window [class="Nitrogen" instance="nitrogen"] floating enable
 for_window [class="Blueman-manager"] floating enable

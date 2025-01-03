@@ -45,7 +45,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -118,6 +118,11 @@ function settarget(){
 	fi
 }
 
+# Set path as tittle
+function stittle() {
+	echo -en "e\2;$,@\a"
+}
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -132,6 +137,9 @@ else
   export EDITOR='nvim'
 fi
 
+# Nvim as man pager
+export MANPAGER='nvim +Man!'
+
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
@@ -144,8 +152,6 @@ alias ls='lsd --group-dirs=first'
 alias cat='/bin/bat --paging=never'
 alias catn='cat'
 alias catnl='bat'
-alias vi='nvim'
-alias vim="nvim"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -42,7 +42,7 @@ return {
   },
 
   -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim" },
+  { "max397574/better-escape.nvim", enabled = false },
 
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
@@ -88,6 +88,12 @@ return {
   -- Additional colorschemes
   {
     "rebelot/kanagawa.nvim",
+  },
+
+  {
+    "ficcdaf/ashen.nvim",
+    lazy = false,
+    priority = 1000,
   },
 
   {
@@ -139,5 +145,9 @@ return {
         enable = false,
       }
     end,
+  },
+  -- To Do list
+  {
+    "atiladefreitas/dooing",
   },
 }
