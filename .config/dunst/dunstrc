@@ -24,7 +24,7 @@
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = 0
+    width = (0, 300)
 
     # The maximum height of a single notification, excluding the frame.
     height = (0, 200)
@@ -214,7 +214,7 @@
     enable_recursive_icon_lookup = true
 
     # Set icon theme (only used for recursive icon lookup)
-    icon_theme = Tela-circle-black
+    icon_theme = Tela-circle-black-dark
     # You can also set multiple icon themes, with the leftmost one being used first.
     # icon_theme = "Adwaita, breeze"
 
