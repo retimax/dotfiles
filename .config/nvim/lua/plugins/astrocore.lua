@@ -31,6 +31,7 @@ return {
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = true, -- sets vim.opt.wrap
         linebreak = false,
+        conceallevel = 2,
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)

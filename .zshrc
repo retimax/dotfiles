@@ -152,6 +152,7 @@ alias ls='lsd --group-dirs=first'
 alias cat='/bin/bat --paging=never'
 alias catn='cat'
 alias catnl='bat'
+alias vault='cd /home/r0lk444/Desktop/obsidian/ && nvim .'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

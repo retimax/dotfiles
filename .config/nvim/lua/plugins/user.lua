@@ -1,10 +1,5 @@
--- You can also add or configure plugins by creating files in this `plugins/` folder
--- Here are some examples:
-
 ---@type LazySpec
 return {
-
-  -- == Examples of Adding Plugins ==
 
   {
     "IogaMaster/neocord",
@@ -115,6 +110,26 @@ return {
     config = true,
   },
 
+  -- Markdown
+  -- Obsidian
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    lazy = false,
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "obsidian",
+          path = "~/Desktop/obsidian",
+        },
+      },
+    },
+  },
+
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",
@@ -149,5 +164,13 @@ return {
   -- To Do list
   {
     "atiladefreitas/dooing",
+  },
+
+  -- Typer test
+  {
+    "nvzone/typr",
+    cmd = "TyprStats",
+    dependencies = "nvzone/volt",
+    opts = {},
   },
 }
