@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if xrandr | grep 'HDMI-1-0 connected' ; then
-  xrandr --output HDMI-1-0 --mode 1920x1080 --primary --rate 75 --left-of eDP-1
+  xrandr --output HDMI-1-0 --left-of eDP-1 --auto
 
   # Polybar
   killall -q polybar
@@ -27,12 +27,9 @@ if xrandr | grep 'HDMI-1-0 connected' ; then
   # Wallpaper
   feh --bg-fill $HOME/Pictures/wallpapers/main.png
 
-  # Keyboard layout
-  setxkbmap latam
-
-  # Effects
   picom
 else
+  xrandr --auto
   # Polybar
   killall -q polybar
 
@@ -56,9 +53,6 @@ else
   fi
   # Wallpaper
   feh --bg-fill $HOME/Pictures/wallpapers/main.png
-
-  # Keyboard layout
-  setxkbmap latam
 
   # Effects
   picom

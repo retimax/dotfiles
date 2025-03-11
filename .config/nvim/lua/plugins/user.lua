@@ -91,17 +91,6 @@ return {
     priority = 1000,
   },
 
-  {
-    "sainnhe/gruvbox-material",
-    config = function()
-      vim.g.gruvbox_material_background = "hard" -- Opciones: 'soft', 'medium', 'hard'
-      vim.g.gruvbox_material_foreground = "original" -- Alterna entre 'original' y 'material'
-      vim.g.gruvbox_material_better_performance = 1 -- Mejora rendimiento deshabilitando características pesadas
-      vim.opt.termguicolors = true
-      vim.opt.background = "dark"
-    end,
-  },
-
   -- Live preview server
   {
     "barrett-ruth/live-server.nvim",
@@ -111,24 +100,6 @@ return {
   },
 
   -- Markdown
-  -- Obsidian
-  {
-    "epwalsh/obsidian.nvim",
-    version = "*",
-    lazy = false,
-    ft = "markdown",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      workspaces = {
-        {
-          name = "obsidian",
-          path = "~/Desktop/obsidian",
-        },
-      },
-    },
-  },
 
   -- Markdown preview
   {
@@ -161,6 +132,7 @@ return {
       }
     end,
   },
+
   -- To Do list
   {
     "atiladefreitas/dooing",

@@ -123,12 +123,25 @@ function stittle() {
 	echo -en "e\2;$,@\a"
 }
 
+# Change current working directory when exiting yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
+
+# kitty ssh fix
+[[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh"
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -142,6 +155,8 @@ export MANPAGER='nvim +Man!'
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
+
+unsetopt histverify
 
 # Aliases
 alias ll='lsd -lh --group-dirs=first'
