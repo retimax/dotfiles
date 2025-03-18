@@ -1,11 +1,5 @@
 ---@type LazySpec
 return {
-
-  {
-    "IogaMaster/neocord",
-    event = "VeryLazy",
-  },
-
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
@@ -122,27 +116,8 @@ return {
     end,
   },
 
-  -- Animations
-  {
-    "echasnovski/mini.animate",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      opts.scroll = {
-        enable = false,
-      }
-    end,
-  },
-
   -- To Do list
   {
     "atiladefreitas/dooing",
-  },
-
-  -- Typer test
-  {
-    "nvzone/typr",
-    cmd = "TyprStats",
-    dependencies = "nvzone/volt",
-    opts = {},
   },
 }

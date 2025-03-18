@@ -90,8 +90,14 @@ source <(fzf --zsh)
 source $ZSH/oh-my-zsh.sh
 
 # Functions
+
 function mkt(){
 	mkdir {nmap,content,exploits,scripts}
+}
+
+function compc(){
+	arg=$1
+	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
 }
 
 # Extract nmap information
@@ -107,7 +113,6 @@ function extractPorts(){
 }
 
 # Settarget
-
 function settarget(){
 	if [ $# -eq 1 ]; then
 	echo $1 > ~/.config/bin/target
@@ -150,9 +155,6 @@ else
   export EDITOR='nvim'
 fi
 
-# Nvim as man pager
-export MANPAGER='nvim +Man!'
-
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
@@ -167,7 +169,9 @@ alias ls='lsd --group-dirs=first'
 alias cat='/bin/bat --paging=never'
 alias catn='cat'
 alias catnl='bat'
-alias vault='cd /home/r0lk444/Desktop/obsidian/ && nvim .'
+alias py='python'
+alias py3='python3'
+alias reload='source ~/.zshrc'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

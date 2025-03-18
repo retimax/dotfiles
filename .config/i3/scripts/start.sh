@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if xrandr | grep 'HDMI-1-0 connected' ; then
-  xrandr --output HDMI-1-0 --left-of eDP-1 --auto
+  xrandr --output HDMI-1-0 --mode 1920x1080 --rate 75 --left-of eDP-1 --auto
 
   # Polybar
   killall -q polybar
@@ -27,7 +27,7 @@ if xrandr | grep 'HDMI-1-0 connected' ; then
   # Wallpaper
   feh --bg-fill $HOME/Pictures/wallpapers/main.png
 
-  picom
+  picom 
 else
   xrandr --auto
   # Polybar
@@ -55,6 +55,6 @@ else
   feh --bg-fill $HOME/Pictures/wallpapers/main.png
 
   # Effects
-  picom
+  picom 
 
 fi
