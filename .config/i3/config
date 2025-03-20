@@ -208,24 +208,19 @@ bindsym $mod+Shift+b exec ~/.config/polybar/scripts/toggle_bluetooth.sh
 bindsym $mod+x exec ~/.config/rofi/powermenu/type-1/powermenu.sh
 
 # autostart
-# exec_always setxkbmap latam
-# exec picom
-# exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id udiskie
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 
 # Betterlockscreen
 bindsym $mod+ z exec betterlockscreen -l
 
 # Gaps settings
-gaps top 39
+gaps top 37
+gaps bottom 2
 gaps inner 5
-# smart_gaps on
-# smart_borders on
 
 for_window [class="^.*"] border pixel 1
 
-# for_window [class="VirtualBox Manager" instance="VirtualBox Manager"] floating enable
-# for_window [class="VirtualBox Machine" instance="VirtualBox Machine"] floating enable
 for_window [class="Nitrogen" instance="nitrogen"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="pavucontrol"] floating enable

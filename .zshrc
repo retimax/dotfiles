@@ -172,6 +172,8 @@ alias catnl='bat'
 alias py='python'
 alias py3='python3'
 alias reload='source ~/.zshrc'
+alias learning='zathura $HOME/Documents/books/development/The_C_Programming_Language_\(2nd_Edition_Ritchie_Kernighan\).pdf &
+cd $HOME/Desktop/learning-c/theClanguage && nvim .'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

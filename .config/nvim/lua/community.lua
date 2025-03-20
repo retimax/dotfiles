@@ -6,6 +6,6 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.colorscheme.mellow-nvim" },
+  { import = "astrocommunity.bars-and-lines.lualine-nvim" },
   -- import/override with your plugins folder
 }

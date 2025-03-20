@@ -74,6 +74,18 @@ return {
     end,
   },
 
+  -- Surround
+  {
+    "kylechui/nvim-surround",
+    version = "^3.0.0",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+
   -- Additional colorschemes
   {
     "rebelot/kanagawa.nvim",
@@ -85,16 +97,7 @@ return {
     priority = 1000,
   },
 
-  -- Live preview server
-  {
-    "barrett-ruth/live-server.nvim",
-    build = "pnpm add -g live server",
-    cmd = { "LiveServerStart", "LiveServerStop" },
-    config = true,
-  },
-
   -- Markdown
-
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",

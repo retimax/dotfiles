@@ -8,6 +8,11 @@ use = "yazi-rs/plugins:full-border"
 rev = "cb6165b"
 hash = "1f3dad061209081a6b04dd6ff2cb06c7"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:mount"
+rev = "2730199"
+hash = "dd97eede8e20e59cd2604e8006e470e2"
+
 [[flavor.deps]]
 use = "ficcdaf/ashen:ashen"
 rev = "8db9a51"
