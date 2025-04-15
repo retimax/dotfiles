@@ -104,12 +104,15 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
 
 # Workspaces
+set $monitor_left "HDMI-1-0"
+set $monitor_right "eDP-1"
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -120,6 +123,17 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+workspace $ws1 output $monitor_left
+workspace $ws2 output $monitor_left
+workspace $ws3 output $monitor_left
+workspace $ws4 output $monitor_left
+workspace $ws5 output $monitor_left
+workspace $ws6 output $monitor_right
+workspace $ws7 output $monitor_right
+workspace $ws8 output $monitor_right
+workspace $ws9 output $monitor_right
+workspace $ws10 output $monitor_right
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -146,8 +160,11 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # Navigate workspaces next/previous
-bindsym Shift+Ctrl+l workspace next
-bindsym Shift+Ctrl+h workspace prev
+bindsym $mod+Ctrl+l workspace next
+bindsym $mod+Ctrl+h workspace prev
+
+# Move to last workspace
+bindsym $mod+Tab workspace back_and_forth
 
 ################
 # Dual monitor #
@@ -191,7 +208,8 @@ bindsym $mod+r mode "resize"
 
 ######## Colors
 # class                 border  backgr. text    indicator child_border
-client.focused          #D5D5D5 #D5D5D5 #111111 #D5D5D5   #D5D5D5
+client.focused          #C999A0 #C999A0 #111111 #C999A0   #C999A0
+# client.focused          #D5D5D5 #D5D5D5 #111111 #D5D5D5   #D5D5D5
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -203,6 +221,7 @@ client.background       #dedede
 bindsym $mod+Shift+f exec firefox
 bindsym $mod+b exec blueman-manager
 bindsym $mod+Shift+b exec ~/.config/polybar/scripts/toggle_bluetooth.sh
+bindsym $mod+o exec obsidian
 
 # Rofi power menu
 bindsym $mod+x exec ~/.config/rofi/powermenu/type-1/powermenu.sh

@@ -25,7 +25,7 @@ if xrandr | grep 'HDMI-1-0 connected' ; then
   done
   fi
   # Wallpaper
-  feh --bg-fill $HOME/Pictures/wallpapers/main.png
+  feh --bg-fill $HOME/Pictures/wallpapers/sadnessBlack.png
 
   picom 
 else
@@ -52,7 +52,7 @@ else
   done
   fi
   # Wallpaper
-  feh --bg-fill $HOME/Pictures/wallpapers/main.png
+  feh --bg-fill $HOME/Pictures/wallpapers/sadnessBlack.png
 
   # Effects
   picom 

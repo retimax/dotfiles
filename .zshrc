@@ -91,6 +91,12 @@ source $ZSH/oh-my-zsh.sh
 
 # Functions
 
+function ucrack(){
+	arg=$1
+	unzip -P crackmes.one $1
+	rm *.zip
+}
+
 function mkt(){
 	mkdir {nmap,content,exploits,scripts}
 }
@@ -143,7 +149,7 @@ function y() {
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # kitty ssh fix
 [[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh"
@@ -156,7 +162,7 @@ else
 fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
+export ARCHFLAGS="-arch $(uname -m)"
 
 unsetopt histverify
 
@@ -174,6 +180,8 @@ alias py3='python3'
 alias reload='source ~/.zshrc'
 alias learning='zathura $HOME/Documents/books/development/The_C_Programming_Language_\(2nd_Edition_Ritchie_Kernighan\).pdf &
 cd $HOME/Desktop/learning-c/theClanguage && nvim .'
+alias crackmes='cd Desktop/reversing/crackmes'
+alias dotfiles='cd $HOME/dotfiles'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
