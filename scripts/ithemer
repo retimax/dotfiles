@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Colors
+Black='\033[1;30m'
+Red='\033[1;31m'
+Purple='\033[1;32m'
+Yellow='\033[1;33m'
+Blue='\033[1;34m'
+Purple='\033[1;35m'
+Cyan='\033[1;36m'
+White='\033[1;37m'
+NC='\033[0m'
+
+# Global variables
+USERNAME="$(whoami)"
+THEMESDIR="/home/$USERNAME/.config/i3/themes"
+CONFIGDIR="/home/$USERNAME/.config"
+
+# Exit function
+trap ctrl_c INT
+
+function ctrl_c () {
+  echo ""
+  echo ""
+  echo -e "${Red}  [!] Exiting iThemer..."
+  exit 1
+}
+
+banner () {
+  echo -e "${Purple}  ╔─────────────────────────────────────────────────────────────────────────────╗${NC}"
+  echo -e "${Purple}  ║                                                                             ║${NC}"
+  echo -e "${Purple}  ║    ███  ███████████ █████                                                   ║${NC}"
+  echo -e "${Purple}  ║   ░░░  ░█░░░███░░░█░░███                                                    ║${NC}"
+  echo -e "${Purple}  ║   ████ ░   ░███  ░  ░███████    ██████  █████████████    ██████  ████████   ║${NC}"
+  echo -e "${Purple}  ║  ░░███     ░███     ░███░░███  ███░░███░░███░░███░░███  ███░░███░░███░░███  ║${NC}"
+  echo -e "${Purple}  ║   ░███     ░███     ░███ ░███ ░███████  ░███ ░███ ░███ ░███████  ░███ ░░░   ║${NC}"
+  echo -e "${Purple}  ║   ░███     ░███     ░███ ░███ ░███░░░   ░███ ░███ ░███ ░███░░░   ░███       ║${NC}"
+  echo -e "${Purple}  ║   █████    █████    ████ █████░░██████  █████░███ █████░░██████  █████      ║${NC}"
+  echo -e "${Purple}  ║  ░░░░░    ░░░░░    ░░░░ ░░░░░  ░░░░░░  ░░░░░ ░░░ ░░░░░  ░░░░░░  ░░░░░       ║${NC}"
+  echo -e "${Purple}  ║                                                                             ║${NC}"
+  echo -e "${Purple}  ╚──────────────────────────────────────────────────────────── by: r0lk444 ────╝${NC}"
+  echo -e "${Purple}  [i] Theme selector for the @retimax personal dotfiles :b"
+}
+
+# Theme selector
+themes () {
+  echo ""
+  echo -e "${Purple}  [!] Available themes:${NC}"
+  echo -e "${Purple}    [1] Vagabond: Black and white theme inspired in vagabond${NC}"
+  echo -e "${Purple}    [2] Sadness: Dark & pinky theme inspired in Sadness band${NC}"
+  echo -e "${Purple}    [3] Itachi: Colorfull theme based in Itachi${NC}"
+  echo ""
+  echo -e "${Purple}  [*] Choose which theme you want to use...${NC}"
+  echo -ne "${Purple}    > "
+  read theme
+
+  case $theme in
+
+    1)
+      echo ""
+      echo -e "${Purple}  [!] Setting up vagabond theme ..."
+      echo -e "${Purple}    [*] Setting up betterlockscreen..."
+      sleep 1
+      (betterlockscreen -u $HOME/Pictures/wallpapers/vagabond.png &> /dev/null &)
+      echo -e "${Purple}      [i] Done"
+      echo -e ""
+      echo -e "${Purple}    [*] Applying colors..."
+      killall dunst &>/dev/null
+      cp -r ${THEMESDIR}/VAGABOND/bin/* ${CONFIGDIR}/bin/
+      cp -r ${THEMESDIR}/VAGABOND/dunst/dunstrc ${CONFIGDIR}/dunst/dunstrc
+      cp -r ${THEMESDIR}/VAGABOND/i3wm/theme.conf ${CONFIGDIR}/i3/theme.conf
+      cp -r ${THEMESDIR}/VAGABOND/polybar/colors.ini ${CONFIGDIR}/polybar/colors.ini
+      cp -r ${THEMESDIR}/VAGABOND/scripts/start.sh ${CONFIGDIR}/i3/scripts/start.sh
+      sleep 2
+      echo -e "${Purple}      [i] Done"
+      i3-msg restart &> /dev/null
+      sleep 1
+      notify-send "Theme updated!!!" "Vagabond theme set up"
+      exit
+      ;;
+
+    2)
+      echo ""
+      echo -e "${Purple}  [!] Setting up sadness theme ..."
+      echo -e "${Purple}    [*] Setting up betterlockscreen..."
+      sleep 1
+      (betterlockscreen -u $HOME/Pictures/wallpapers/sadness.png &> /dev/null &)
+      echo -e "${Purple}      [i] Done"
+      echo -e ""
+      echo -e "${Purple}    [*] Applying colors..."
+      killall dunst &>/dev/null
+      cp -r ${THEMESDIR}/SADNESS/bin/* ${CONFIGDIR}/bin/
+      cp -r ${THEMESDIR}/SADNESS/dunst/dunstrc ${CONFIGDIR}/dunst/dunstrc
+      cp -r ${THEMESDIR}/SADNESS/i3wm/theme.conf ${CONFIGDIR}/i3/theme.conf
+      cp -r ${THEMESDIR}/SADNESS/polybar/colors.ini ${CONFIGDIR}/polybar/colors.ini
+      cp -r ${THEMESDIR}/SADNESS/scripts/start.sh ${CONFIGDIR}/i3/scripts/start.sh
+      sleep 2
+      echo -e "${Purple}      [i] Done"
+      i3-msg restart &> /dev/null
+      sleep 1
+      notify-send "Theme updated!!!" "Sadness theme set up" &
+      exit
+      ;;
+
+    3)
+      echo ""
+      echo -e "${Purple}  [!] Setting up sadness theme ..."
+      echo -e "${Purple}    [*] Setting up betterlockscreen..."
+      sleep 1
+      (betterlockscreen -u $HOME/Pictures/wallpapers/itachi.jpg &> /dev/null &)
+      echo -e "${Purple}      [i] Done"
+      echo -e ""
+      echo -e "${Purple}    [*] Applying colors..."
+      killall dunst &>/dev/null
+      cp -r ${THEMESDIR}/ITACHI/bin/* ${CONFIGDIR}/bin/
+      cp -r ${THEMESDIR}/ITACHI/dunst/dunstrc ${CONFIGDIR}/dunst/dunstrc
+      cp -r ${THEMESDIR}/ITACHI/i3wm/theme.conf ${CONFIGDIR}/i3/theme.conf
+      cp -r ${THEMESDIR}/ITACHI/polybar/colors.ini ${CONFIGDIR}/polybar/colors.ini
+      cp -r ${THEMESDIR}/ITACHI/scripts/start.sh ${CONFIGDIR}/i3/scripts/start.sh
+      sleep 2
+      echo -e "${Purple}      [i] Done"
+      i3-msg restart &> /dev/null
+      sleep 1
+      notify-send "Theme updated!!!" "Itachi theme set up" &
+      exit
+      ;;
+    *)
+      echo ""
+      echo -e "${Red}  [!] Invalid option, use numbers"
+      sleep 2
+      themes
+
+  esac
+}
+
+main() {
+  banner
+  themes
+}
+
+main

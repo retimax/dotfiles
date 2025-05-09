@@ -5,8 +5,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# GEM HOME
+export GEM_HOME="$HOME/.gem"
+
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$GEM_HOME/bin:$PATH"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -91,8 +94,12 @@ source $ZSH/oh-my-zsh.sh
 
 # Functions
 
+function reload(){
+	source ~/.zshrc && echo "[*] Zshrc recargado!"
+}
+
+# Unzip crackmes with default password
 function ucrack(){
-	arg=$1
 	unzip -P crackmes.one $1
 	rm *.zip
 }
@@ -101,6 +108,7 @@ function mkt(){
 	mkdir {nmap,content,exploits,scripts}
 }
 
+# Compile C file and run it
 function compc(){
 	arg=$1
 	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
@@ -147,6 +155,7 @@ function y() {
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -177,11 +186,13 @@ alias catn='cat'
 alias catnl='bat'
 alias py='python'
 alias py3='python3'
-alias reload='source ~/.zshrc'
 alias learning='zathura $HOME/Documents/books/development/The_C_Programming_Language_\(2nd_Edition_Ritchie_Kernighan\).pdf &
 cd $HOME/Desktop/learning-c/theClanguage && nvim .'
 alias crackmes='cd Desktop/reversing/crackmes'
 alias dotfiles='cd $HOME/dotfiles'
+alias ninja='clear && docker run -it comandos-ninja:latest'
+alias redLocal='cd $HOME/Documents/Amerike/Cursos/nmap/lab/ && docker-compose up -d &> /dev/null && docker exec -it kali bash'
+alias blog='cd $HOME/github/retimax.github.io/ && nvim .'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

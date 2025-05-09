@@ -4,6 +4,7 @@
 
 #Leader key
 set $mod Mod4
+set $alt Mod1
 
 # Window titles
 font pango:MesloLGL Nerd Font 8
@@ -17,6 +18,10 @@ exec --no-startup-id dex --autostart --environment i3
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+
+#includes
+include ./theme.conf
+include ./scratchpads.conf
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -84,7 +89,7 @@ bindsym $mod+XF86MonBrightnessUp exec setxkbmap -layout latam && notify-send Key
 bindsym $mod+XF86MonBrightnessDown exec setxkbmap -layout us && notify-send Keyboard\ Layout us
 
 # split in horizontal orientation
-bindsym $mod+Alt+h split h
+bindsym $mod+$alt+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -206,28 +211,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-######## Colors
-# class                 border  backgr. text    indicator child_border
-client.focused          #C999A0 #C999A0 #111111 #C999A0   #C999A0
-# client.focused          #D5D5D5 #D5D5D5 #111111 #D5D5D5   #D5D5D5
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
-client.background       #dedede
-
 # applications
 bindsym $mod+Shift+f exec firefox
 bindsym $mod+b exec blueman-manager
-bindsym $mod+Shift+b exec ~/.config/polybar/scripts/toggle_bluetooth.sh
+bindsym $mod+Shift+b exec ~/.config/bin/toggle_bluetooth.sh
 bindsym $mod+o exec obsidian
 
 # Rofi power menu
 bindsym $mod+x exec ~/.config/rofi/powermenu/type-1/powermenu.sh
 
+# scratchpads
+bindsym $mod+u [instance="scratchterm"] scratchpad show; [instance="scratchterm"] move position center
+
+# scripts
+bindsym $mod+minus exec $HOME/.config/i3/scripts/toggle_polybar.sh
+
 # autostart
 exec_always --no-startup-id udiskie
+exec_always --no-startup-id xset r rate 230 50
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 
 # Betterlockscreen
