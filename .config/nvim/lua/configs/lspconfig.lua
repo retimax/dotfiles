@@ -10,6 +10,12 @@ lspconfig.servers = {
   "clangd",
 }
 
+
+-- list of servers configured with default config.
+local default_servers = {
+  "pyright",
+}
+
 -- Clangd setup
 lspconfig.clangd.setup({
   on_attach = function(client, bufnr)
@@ -19,10 +25,7 @@ lspconfig.clangd.setup({
   end,
   on_init = on_init,
   capabilities = capabilities,
-  })
-
--- list of servers configured with default config.
-local default_servers = {}
+})
 
 -- lsps with default config
 for _, lsp in ipairs(default_servers) do

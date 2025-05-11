@@ -1,17 +1,54 @@
 return {
+  -- Formatting
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
+  {
+    "zapling/mason-conform.nvim",
+    event = "VeryLazy",
+    dependencies = { "conform.nvim" },
+    config = function()
+      require "configs.mason-conform"
+    end,
+  },
+
+  -- LSP
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-      require ("nvchad.configs.lspconfig").defaults()
-      require ("configs.lspconfig")
+      require("nvchad.configs.lspconfig").defaults()
+      require "configs.lspconfig"
+    end,
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lspconfig" },
+    config = function()
+      require "configs.mason-lspconfig"
+    end,
+  },
+
+  -- Lint
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require "configs.lint"
+    end,
+  },
+
+  {
+    "rshkarin/mason-nvim-lint",
+    event = "VeryLazy",
+    dependencies = { "nvim-lint" },
+    config = function()
+      require "configs.mason-lint"
     end,
   },
 
@@ -19,15 +56,11 @@ return {
   -- { import = "nvchad.blink.lazyspec" },
 
   {
-  	"nvim-treesitter/nvim-treesitter",
-  	opts = {
-  		ensure_installed = {
-  			"vim", "lua", "vimdoc",
-        "html", "css", "c",
-        "cmake", "cpp", "make",
-        "python", "bash",
-  		},
-  	},
+    "nvim-treesitter/nvim-treesitter",
+    cmd = "TSUpdate",
+    config = function()
+      require "configs.treesitter"
+    end,
   },
 
   -- LazyGit
@@ -45,8 +78,7 @@ return {
       "nvim-lua/plenary.nvim",
     },
     keys = {
-      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    }
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
   },
-
 }
