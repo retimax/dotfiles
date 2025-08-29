@@ -5,81 +5,38 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# GEM HOME
-export GEM_HOME="$HOME/.gem"
+# XDG-compliant zsh settings - Create directories if they don't exist
+[[ ! -d "$XDG_CACHE_HOME/zsh" ]] && mkdir -p "$XDG_CACHE_HOME/zsh"
+[[ ! -d "$XDG_STATE_HOME/zsh" ]] && mkdir -p "$XDG_STATE_HOME/zsh"
 
-# If you come from bash you might have to change your $PATH.
-export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$GEM_HOME/bin:$PATH"
+# History settings
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Load completion system (FIXED - was missing autoload)
+autoload -Uz compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# Cuda
+export LD_LIBRARY_PATH=/usr/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64
+export CUDA_HOME=/opt/cuda
+
+# PATH updates - Using XDG-compliant paths where possible
+export PATH="$NIMBLE_DIR/bin:$PATH"  # Using XDG-compliant nimble path
+export PATH="$HOME/.choosenim/current/bin:$PATH"  # This one might not support XDG yet
+export PATH="$GEM_HOME/bin:$PATH"  # Using XDG-compliant gem path
+export PATH="$CARGO_HOME/bin:$PATH"  # Using XDG-compliant cargo path
+export PATH="$PYENV_ROOT/bin:$PATH"  # Using XDG-compliant pyenv path
+
+# Oh My Zsh installation - FIXED to use XDG-compliant path
+export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+
+# Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Plugins
 plugins=(
 	git
 	zsh-autosuggestions
@@ -90,9 +47,17 @@ plugins=(
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-source $ZSH/oh-my-zsh.sh
+# Load Oh My Zsh - FIXED path and added error checking
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
+    source "$ZSH/oh-my-zsh.sh"
+else
+    echo "Warning: Oh My Zsh not found at $ZSH"
+    echo "Please run the migration script or move ~/.oh-my-zsh to $ZSH"
+fi
 
 # Functions
+export HMports=/home/r0lk444/Desktop/CTFs/HackMex2025/wordlists/ports.txt
+export HMcreds=/home/r0lk444/Desktop/CTFs/HackMex2025/wordlists/passwd.txt
 
 function reload(){
 	source ~/.zshrc && echo "[*] Zshrc recargado!"
@@ -106,12 +71,20 @@ function ucrack(){
 
 function mkt(){
 	mkdir {nmap,content,exploits,scripts}
+  touch notes.md
 }
 
 # Compile C file and run it
 function compc(){
 	arg=$1
 	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
+}
+
+# The same that compc but just for test the program
+function testc(){
+	arg=$1
+	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
+  rm ${arg::-2}
 }
 
 # Extract nmap information
@@ -153,11 +126,9 @@ function y() {
 }
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
 export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
-# You may need to manually set your language environment
+# Language environment
 export LANG=en_US.UTF-8
 
 # kitty ssh fix
@@ -173,7 +144,18 @@ fi
 # Compilation flags
 export ARCHFLAGS="-arch $(uname -m)"
 
+# History options
 unsetopt histverify
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt SHARE_HISTORY
+
+# Initialize pyenv if it exists
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
 
 # Aliases
 alias ll='lsd -lh --group-dirs=first'
@@ -193,6 +175,11 @@ alias dotfiles='cd $HOME/dotfiles'
 alias ninja='clear && docker run -it comandos-ninja:latest'
 alias redLocal='cd $HOME/Documents/Amerike/Cursos/nmap/lab/ && docker-compose up -d &> /dev/null && docker exec -it kali bash'
 alias blog='cd $HOME/github/retimax.github.io/ && nvim .'
+alias odat='/home/r0lk444/Desktop/offSecTools/odat-libc2.17-x86_64/odat-libc2.17-x86_64'
+
+# Load XDG aliases if they exist
+[[ -f "$XDG_CONFIG_HOME/xdg-aliases" ]] && source "$XDG_CONFIG_HOME/xdg-aliases"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# FIXED - Using XDG-compliant path for p10k config
+[[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh

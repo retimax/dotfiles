@@ -1,5 +1,3 @@
-Pictures/Screenshots
-Pictures/profile.png
+Pictures/*
+!Pictures/wallpapers/
 autoinstall.sh
-Pictures/muscleMan.jpg
-scripts/schedule

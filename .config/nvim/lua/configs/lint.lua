@@ -1,8 +1,22 @@
-local lint = require("lint")
+local lint = require "lint"
 
 lint.linters_by_ft = {
   lua = { "luacheck" },
   python = { "flake8" },
+  javascript = { "eslint_d" },
+  typescript = { "eslint_d" },
+  javascriptreact = { "eslint_d" },
+  typescriptreact = { "eslint_d" },
+}
+
+lint.linters.eslint_d.args = {
+  "--format",
+  "unix",
+  "--stdin",
+  "--stdin-filename",
+  function()
+    return vim.api.nvim_buf_get_name(0)
+  end,
 }
 
 lint.linters.luacheck.args = {

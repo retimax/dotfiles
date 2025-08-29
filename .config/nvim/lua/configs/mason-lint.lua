@@ -23,7 +23,7 @@ for _, v in pairs(lint.linters_by_ft) do
   end
 end
 
-require("mason-nvim-lint").setup({
+require("mason-nvim-lint").setup {
   ensure_installed = all_linters,
   automatic_installation = false,
-})
+}

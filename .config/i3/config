@@ -215,10 +215,10 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # applications
-bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+f exec zen-browser
 bindsym $mod+b exec blueman-manager
-bindsym $mod+Shift+b exec ~/.config/bin/toggle_bluetooth.sh
 bindsym $mod+o exec obsidian
+bindsym $mod+g exec thunderbird
 
 # Rofi power menu
 bindsym $mod+x exec ~/.config/rofi/powermenu/type-1/powermenu.sh
@@ -228,19 +228,21 @@ bindsym $mod+u [instance="scratchterm"] scratchpad show; [instance="scratchterm"
 
 # scripts
 bindsym $mod+minus exec $HOME/.config/i3/scripts/toggle_polybar.sh
+bindsym $mod+Shift+b exec ~/.config/bin/toggle_bluetooth.sh
+
+# Betterlockscreen
+bindsym $mod+ z exec betterlockscreen -l
 
 # autostart
 exec_always --no-startup-id udiskie
 exec_always --no-startup-id xset r rate 230 50
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 
-# Betterlockscreen
-bindsym $mod+ z exec betterlockscreen -l
-
 # Gaps settings
 gaps top 37
 gaps bottom 2
 gaps inner 5
+hide_edge_borders smart
 
 for_window [class="^.*"] border pixel 1
 
@@ -249,3 +251,4 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="pavucontrol"] floating enable
 for_window [class="mpv"] fullscreen enable
 for_window [class="feh"] floating enable
+for_window [class="Nextcloud"] floating enable
