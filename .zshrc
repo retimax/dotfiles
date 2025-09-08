@@ -56,9 +56,6 @@ else
 fi
 
 # Functions
-export HMports=/home/r0lk444/Desktop/CTFs/HackMex2025/wordlists/ports.txt
-export HMcreds=/home/r0lk444/Desktop/CTFs/HackMex2025/wordlists/passwd.txt
-
 function reload(){
 	source ~/.zshrc && echo "[*] Zshrc recargado!"
 }

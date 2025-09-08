@@ -8,7 +8,7 @@ shell_integration enabled
 action_alias kitty_scrollback_nvim kitten /home/r0lk444/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py
 
 # Browse scrollback buffer in nvim
-map alt+shift+h kitty_scrollback_nvim 
+map alt+shift+h kitty_scrollback_nvim
 # Browse output of the last shell command in nvim
 map alt+shift+g kitty_scrollback_nvim --config ksb_builtin_last_cmd_output
 # Show clicked command output in nvim
@@ -68,6 +68,6 @@ shell zsh
 
 
 # BEGIN_KITTY_THEME
-# Hybrid
+# Gruvbox Material Dark Hard
 include current-theme.conf
 # END_KITTY_THEME

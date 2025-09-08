@@ -1,11 +1,11 @@
 #!/bin/sh
 if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]
 then
-  echo "%{F#66ebdbb2}Bluetooth"
+  echo "%{F#66DEDEDE}Bluetooth"
 else
   if [ $(echo info | bluetoothctl | grep 'Device' | wc -c) -eq 0 ]
   then 
     echo "Bluetooth"
   fi
-  echo "%{F#ebdbb2}Bluetooth"
+  echo "%{F#DEDEDE}Bluetooth"
 fi
