@@ -17,3 +17,8 @@ hash = "dd97eede8e20e59cd2604e8006e470e2"
 use = "ficcdaf/ashen:ashen"
 rev = "c6397d0"
 hash = "a48aa4d7140c52cdd14552039b632800"
+
+[[flavor.deps]]
+use = "gosxrgxx/flexoki-dark"
+rev = "28e1977"
+hash = "9dbbb64ea20f9f1271c31951dea55c7b"

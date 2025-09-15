@@ -74,7 +74,7 @@ function mkt(){
 # Compile C file and run it
 function compc(){
 	arg=$1
-	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
+	gcc -w -o ${arg::-2} $arg && output/${arg::-2}
 }
 
 # The same that compc but just for test the program
@@ -165,7 +165,7 @@ alias catn='cat'
 alias catnl='bat'
 alias py='python'
 alias py3='python3'
-alias learning='zathura $HOME/Documents/books/development/The_C_Programming_Language_\(2nd_Edition_Ritchie_Kernighan\).pdf &
+alias learning='foliate $HOME/Documents/books/development/ePub\ files/TheCProgrammingLanguage.epub &
 cd $HOME/Desktop/learning-c/theClanguage && nvim .'
 alias crackmes='cd Desktop/reversing/crackmes'
 alias dotfiles='cd $HOME/dotfiles'

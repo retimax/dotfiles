@@ -1,3 +1,4 @@
 Pictures/*
 !Pictures/wallpapers/
 autoinstall.sh
+scripts/git-commands.sh
