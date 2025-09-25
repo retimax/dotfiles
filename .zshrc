@@ -41,11 +41,15 @@ plugins=(
 	git
 	zsh-autosuggestions
 	zsh-syntax-highlighting
-	sudo
+  vi-mode
 )
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+
+# Vi mode
+bindkey -v 
+export KEYTIMEOUT=1
 
 # Load Oh My Zsh - FIXED path and added error checking
 if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
@@ -122,8 +126,20 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+# The C Language environment
+books="$HOME/Documents/books"
+function learning() {
+  foliate $books/development/ePub\ files/TheCProgrammingLanguage.epub &>/dev/null & 
+  disown &&
+  cd $HOME/Desktop/learning-c/theClanguage/ &&
+  nvim .
+}
+
+# Bat theme
+export BAT_THEME="OneHalfDark"
+
 # User configuration
-export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -l man -p'"
 
 # Language environment
 export LANG=en_US.UTF-8
@@ -165,8 +181,8 @@ alias catn='cat'
 alias catnl='bat'
 alias py='python'
 alias py3='python3'
-alias learning='foliate $HOME/Documents/books/development/ePub\ files/TheCProgrammingLanguage.epub &
-cd $HOME/Desktop/learning-c/theClanguage && nvim .'
+# alias learning='foliate $HOME/Documents/books/development/ePub\ files/TheCProgrammingLanguage.epub &
+# cd $HOME/Desktop/learning-c/theClanguage && nvim .'
 alias crackmes='cd Desktop/reversing/crackmes'
 alias dotfiles='cd $HOME/dotfiles'
 alias ninja='clear && docker run -it comandos-ninja:latest'

@@ -14,14 +14,27 @@ M.base46 = {
   },
 }
 
-M.nvdash = { load_on_startup = false }
+M.nvdash = { load_on_startup = true }
 M.ui = {
   tabufline = {
     lazyload = false,
   },
+
   statusline = {
-    theme = "vscode_colored",
+    theme = "minimal",
+    separator_style = "block",
   },
+
+  telescope = {
+    style = "bordered",
+  },
+
+  cmp = {
+    style = "default",
+    format_colors = { lsp = true },
+  },
+
+  lsp = { signature = true },
 }
 
 return M

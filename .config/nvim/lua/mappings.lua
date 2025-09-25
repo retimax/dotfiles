@@ -12,3 +12,8 @@ map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 map({ "n", "i", "v" }, "<C-q>", "<cmd> q <cr>")
+
+-- Copilot
+map("i", "<C-l>", function()
+  vim.fn.feedkeys(vim.fn["copilot#Accept"](), "")
+end, { desc = "Copilot Accept", noremap = true, silent = true })

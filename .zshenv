@@ -34,6 +34,9 @@ export RDOCRC="$XDG_DATA_HOME/rdoc"
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 # Pyenv
 export PYENV_ROOT=$XDG_DATA_HOME/pyenv
+#Golang
+export GOPATH="$XDG_DATA_HOME"/go
+export GOMODCACHE="$XDG_CACHE_HOME"/go/mod
 
 # Additional XDG cleanups from xdg-ninja
 # Android
@@ -60,6 +63,8 @@ export RENPY_PATH_TO_SAVES="$XDG_DATA_HOME"
 export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 # Wine
 export WINEPREFIX="$XDG_DATA_HOME"/wine
+# Parallel 
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
 
 # PATH additions for tools that need them
 export PATH="$CARGO_HOME/bin:$PATH"
