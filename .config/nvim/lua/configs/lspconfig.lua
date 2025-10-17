@@ -14,6 +14,7 @@ lspconfig.servers = {
   "eslint",
   "gopls",
   "bashls",
+  "hls",
 }
 
 -- list of servers configured with default config.
@@ -21,6 +22,15 @@ local default_servers = {
   "pyright",
   "bashls",
 }
+
+-- LSPs with default config
+for _, lsp in ipairs(default_servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+    on_init = on_init,
+    capabilities = capabilities,
+  }
+end
 
 -- Golang setup
 lspconfig.gopls.setup {
@@ -59,10 +69,22 @@ lspconfig.clangd.setup {
   root_dir = lspconfig.util.root_pattern("compile_flags.txt", ".git"),
 }
 
+-- Haskell setup
+lspconfig.hls.setup {
+  on_attach = function(client, bufnr)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+    on_attach(client, bufnr)
+  end,
+  on_init = on_init,
+  capabilities = capabilities,
+  cmd = { "haskell-language-server-wrapper", "--lsp" },
+}
+
 -- Nimlsp
 lspconfig.nim_langserver.setup {
   on_attach = on_attach,
-  on_init = on_init, -- Agregar esta línea
+  on_init = on_init,
   capabilities = capabilities,
   cmd = { "nimlsp" },
   filetypes = { "nim" },
@@ -74,7 +96,7 @@ lspconfig.nim_langserver.setup {
   single_file_support = true,
   settings = {
     nim = {
-      -- Configuraciones específicas de nimlsp si las necesitas
+      -- Another configurations
     },
   },
 }
@@ -107,15 +129,6 @@ lspconfig.tailwindcss.setup {
 require("render-markdown").setup {
   completions = { lsp = { enable = true } },
 }
-
--- lsps with default config
-for _, lsp in ipairs(default_servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
-  }
-end
 
 lspconfig.lua_ls.setup {
   on_attach = on_attach,

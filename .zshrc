@@ -44,12 +44,12 @@ plugins=(
   vi-mode
 )
 
-# Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
 # Vi mode
 bindkey -v 
 export KEYTIMEOUT=1
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 # Load Oh My Zsh - FIXED path and added error checking
 if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
@@ -60,19 +60,21 @@ else
 fi
 
 # Functions
+
 function reload(){
 	source ~/.zshrc && echo "[*] Zshrc recargado!"
 }
 
-# Unzip crackmes with default password
-function ucrack(){
-	unzip -P crackmes.one $1
-	rm *.zip
-}
+# Using fzf to search and cd into directories
+function cdf() {
+  if [[ $# -gt 0 ]]; then 
+    builtin cd "$@"
+  else
+    local dir 
+    dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) && builtin cd
 
-function mkt(){
-	mkdir {nmap,content,exploits,scripts}
-  touch notes.md
+    "$dir"
+  fi
 }
 
 # Compile C file and run it
@@ -81,12 +83,63 @@ function compc(){
 	gcc -w -o ${arg::-2} $arg && output/${arg::-2}
 }
 
+# Open projects in nvim
+function projects() {
+  local directory="$HOME/Desktop/projects"
+  local dir
+
+  dir=$(find $directory -mindepth 1 -maxdepth 1 -type d | fzf --preview 'tree -C {} -L 2' --border --style=full --reverse)
+
+  cd "$dir" && nvim .
+}
+
 # The same that compc but just for test the program
 function testc(){
 	arg=$1
 	gcc -w -o ${arg::-2} $arg && ./${arg::-2}
   rm ${arg::-2}
 }
+
+# Set path as tittle
+function stittle() {
+	echo -en "e\2;$,@\a"
+}
+
+# Change current working directory when exiting yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+# The C Language environment
+books="$HOME/Documents/books"
+function learning() {
+  local books="$HOME/Documents/books"
+  foliate $books/development/ePub\ files/TheCProgrammingLanguage.epub &>/dev/null & 
+  disown &&
+  cd $HOME/Desktop/learning-c/theClanguage/ &&
+  nvim .
+}
+
+# *****************************
+# *    Hacking fucntions      *
+# *****************************
+
+function mkt(){
+	mkdir {nmap,content,exploits,scripts}
+  touch notes.md
+}
+
+# Unzip crackmes with default password
+function ucrack(){
+	unzip -P crackmes.one $1
+	rm *.zip
+}
+
 
 # Extract nmap information
 function extractPorts(){
@@ -109,30 +162,6 @@ function settarget(){
 	else
 	echo $1 $2 > ~/.config/bin/target
 	fi
-}
-
-# Set path as tittle
-function stittle() {
-	echo -en "e\2;$,@\a"
-}
-
-# Change current working directory when exiting yazi
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
-
-# The C Language environment
-books="$HOME/Documents/books"
-function learning() {
-  foliate $books/development/ePub\ files/TheCProgrammingLanguage.epub &>/dev/null & 
-  disown &&
-  cd $HOME/Desktop/learning-c/theClanguage/ &&
-  nvim .
 }
 
 # Bat theme
@@ -181,13 +210,8 @@ alias catn='cat'
 alias catnl='bat'
 alias py='python'
 alias py3='python3'
-# alias learning='foliate $HOME/Documents/books/development/ePub\ files/TheCProgrammingLanguage.epub &
-# cd $HOME/Desktop/learning-c/theClanguage && nvim .'
 alias crackmes='cd Desktop/reversing/crackmes'
 alias dotfiles='cd $HOME/dotfiles'
-alias ninja='clear && docker run -it comandos-ninja:latest'
-alias redLocal='cd $HOME/Documents/Amerike/Cursos/nmap/lab/ && docker-compose up -d &> /dev/null && docker exec -it kali bash'
-alias blog='cd $HOME/github/retimax.github.io/ && nvim .'
 alias odat='/home/r0lk444/Desktop/offSecTools/odat-libc2.17-x86_64/odat-libc2.17-x86_64'
 
 # Load XDG aliases if they exist

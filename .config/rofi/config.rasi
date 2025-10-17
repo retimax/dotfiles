@@ -8,7 +8,7 @@
 
 configuration {
 	/*---------- General setting ----------*/
-	modi: "drun,run,filebrowser,window";
+	modi: "drun,run,filebrowser,window,ssh";
 	case-sensitive: false;
 	cycle: true;
 	filter: "";
@@ -28,7 +28,7 @@ configuration {
 	ssh-client: "ssh";
 	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";
 	parse-hosts: true;
-	parse-known-hosts: true;
+	parse-known-hosts: false;
 
 	/*---------- Drun settings ----------*/
 	drun-categories: "";
