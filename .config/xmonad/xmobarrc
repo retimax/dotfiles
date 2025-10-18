@@ -1,25 +1,36 @@
-Config { overrideRedirect = True
-       , font     = "FiraCode Nerd Font 11"
-       , bgColor  = "#0F0F0F"
-       , fgColor  = "#dbdad2"
-       , position = TopH 25
-       , commands = [   Run Cpu
-                        [ "-L", "3"
-                        , "-H", "50"
-                        , "--high"  , "red"
-                        , "--normal", "fgColor"
-                        ] 10
-                    , Run Alsa "default" "Master"
-                        [ "--template", "<volumestatus>"
-                        , "--suffix"  , "True"
-                        , "--"
-                        , "--on", ""
-                        ]
-                    , Run Memory ["--template", "Mem: <usedratio>%"] 10
-                    , Run Date "%a %Y-%m-%d %H:%M" "date" 10
-                    , Run XMonadLog
-                    ]
-       , sepChar  = "%"
-       , alignSep = "}{"
-       , template = "%XMonadLog% }{ %alsa:default:Master% | %cpu% | %memory% | %date% "
-       }
+Config 
+  { overrideRedirect = True
+  , font     = "FiraCode Nerd Font 11"
+  , bgColor  = "#0F0F0F"
+  , fgColor  = "#dbdad2"
+  , position = TopH 25
+  , commands = 
+      [ Run MultiCpu
+          [ "-L", "3"
+          , "-H", "50"
+          , "--high"  , "red"
+          , "--normal", "#dbdad2"
+          , "--template", "CPU: <total>%"
+          ] 10
+      , Run Alsa "default" "Master"
+          [ "--template", "<volumestatus>"
+          , "--suffix"  , "True"
+          , "--"
+          , "--on", ""
+          ]
+      , Run Memory ["--template", "Mem: <usedratio>%"] 10
+      , Run Battery 
+          [ "--template" , "Bat: <left>%"
+          , "--Low"      , "20"
+          , "--High"     , "80"
+          , "--low"      , "red"
+          , "--normal"   , "#dbdad2"
+          , "--high"     , "#dbdad2"
+          ] 50
+      , Run Date "%a %Y-%m-%d %H:%M" "date" 10
+      , Run XMonadLog
+      ]
+  , sepChar  = "%"
+  , alignSep = "}{"
+  , template = "%XMonadLog% }{ %alsa:default:Master% | %battery% | %multicpu% | %memory% | %date%"
+  }

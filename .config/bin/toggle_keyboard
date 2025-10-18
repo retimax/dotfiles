@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+layout=$(setxkbmap -query | grep layout | awk '{printf $2}')
+
+if [[ "$layout" == "latam" ]]; then
+  setxkbmap us
+  notify-send "Layout Changed" "Us"
+else
+  setxkbmap latam
+  notify-send "Layout Changed" "Latam"
+fi

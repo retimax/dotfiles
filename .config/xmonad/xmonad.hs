@@ -2,7 +2,6 @@ import XMonad
 import System.IO (hPutStrLn)
 
 import XMonad.Actions.UpdatePointer
-
 import XMonad.Util.Run
 import XMonad.Util.Loggers
 import XMonad.Util.EZConfig
@@ -10,85 +9,102 @@ import XMonad.Util.SpawnOnce
 import XMonad.Operations (unGrab)
 
 -- Layouts
-import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
+import XMonad.Layout.NoBorders
+import XMonad.Layout.ThreeColumns
 import XMonad.Layout.SideBorderDecoration
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops    -- Better handling of windows/panels
 import XMonad.Hooks.ManageHelpers
----- Xmobar Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP (dynamicLogWithPP)
 
+
+-- ===============================================
 -- Variables
+-- ===============================================
+
+-- Colorshcheme
 myFocusedColor    = "#dbdad2"
 myUnfocusedColor  = "#817E77"
-myTerm            = "kitty"
 
--- Main Configuration
-myConfig = def
-  {
-    modMask       = mod4Mask, -- Setting Super as mod key
-    layoutHook    = myLayout,
-    manageHook    = myManageHook,
-    startupHook   = myStartupHook,
-    workspaces    = myWorkspaces, 
+-- Default applications
+myTerm :: String
+myBrowser :: String
 
-    -- Pointer follows focus
-    logHook       = updatePointer (0.5, 0.5) (0, 0),
-
-    -- Border colors   
-    normalBorderColor   = myUnfocusedColor,
-    focusedBorderColor  = myFocusedColor
-  }
-  `additionalKeysP` myKeys
-
--- Dynamic Xmobar
-barSpawner :: ScreenId -> X StatusBarConfig
-barSpawner 0 = pure xmobarTop   -- dos barras en el monitor principal
-barSpawner 1 = pure xmobarSec                     -- una barra en el segundo monitor
-barSpawner _ = mempty                             -- nada en otros monitores
-
-xmobarTop :: StatusBarConfig
-xmobarTop    = statusBarPropTo "_XMONAD_LOG_1"
-                "xmobar -x 0 $HOME/.config/xmonad/xmobarrc"
-                (pure myXmobarPP)
-
-xmobarSec :: StatusBarConfig
-xmobarSec    = statusBarPropTo "_XMONAD_LOG_3"
-                "xmobar -x 1 $HOME/.config/xmonad/xmobarrc"
-                (pure myXmobarPP)
+myTerm = "kitty"
+myBrowser = "zen-browser"
 
 -- Workspaces 
 myWorkspaces :: [String]
-myWorkspaces = ["1:www", "2:dev", "3:term", "4:ref", "5:git" , "6:note", "7:mpd", "8:chat", "9:misc"]
+myWorkspaces = 
+  ["1:www"
+  , "2:dev"
+  , "3:term"
+  , "4:ref"
+  , "5:git" 
+  , "6:note"
+  , "7:mpd"
+  , "8:chat"
+  , "9:misc"
+  ]
 
+
+-- ===============================================
+-- Keybindings
+-- ===============================================
 myKeys :: [(String, X ())]
 myKeys =
-  [
-  ("M-<Return>",    spawn myTerm),
-  ("M-d",           spawn "$HOME/.config/rofi/launchers/type-1/launcher.sh"),
-  ("M-S-f",         spawn "zen-browser"),
+  [ ("M-<Return>",    spawn myTerm)
+  , ("M-S-f",         spawn myBrowser)
+    
+    -- Screenshot bindings
+  , ("<Print>",       unGrab *> spawn   "flameshot screen -p $HOME/Pictures/Screenshots/")
+  , ("M-<Print>",     unGrab *> spawn   "flameshot gui -p $HOME/Pictures/Screenshots/")
+  , ("M-S-<Print>",   unGrab *> spawn   "flameshot gui -c")
+    
+    -- Betterlockscreen
+  , ("M-z",           spawn "betterlockscreen -l")
+    
+    -- Rofi
+  , ("M-d",           spawn "$HOME/.config/rofi/launchers/type-1/launcher.sh")
+  , ("M-x",           spawn "$HOME/.config/rofi/powermenu/type-1/powermenu.sh")
+    
+    -- Special Keys
+  , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
+  , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+  , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle" )
+    
+    -- Brightness
+  , ("<XF86MonBrightnessUp>", spawn "brightnessctl set +10%")
+  , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 10%-")
 
-  -- Screenshot bindings
-  ("<Print>",       unGrab *> spawn   "flameshot screen -p $HOME/Pictures/Screenshots/"),
-  ("M-<Print>",     unGrab *> spawn   "flameshot gui -p $HOME/Pictures/Screenshots/"),
-  ("M-S-<Print>",   unGrab *> spawn   "flameshot gui -c")
+    -- Apps
+  , ("M-o",    spawn "obsidian")
+
+    -- Scripts
+  , ("M-<Tab>", spawn "$HOME/dotfiles/scripts/toggle_keyboard")
   ]
 
+
+-- ===============================================
 -- Manage Hook
+-- ===============================================
 myManageHook :: ManageHook
 myManageHook = composeAll
-  [
-  className =? "Blueman-manager"      --> doFloat,
-  className =? "xmessage"             --> doFloat,
-  isDialog                            --> doFloat 
+  [ className =? "Blueman-manager"      --> doCenterFloat
+  , className =? "xmessage"             --> doCenterFloat
+  , className =? "pavucontrol"          --> doCenterFloat
+  , isDialog                            --> doFloat 
   ]
 
+
+-- ===============================================
 -- Layout Hook 
-myLayout = spacing 8 $ tiled ||| Mirror tiled ||| Full ||| threeCol
+-- ===============================================
+myLayout = smartBorders . spacing 8 $ tiled ||| Mirror tiled ||| noBorders Full ||| threeCol
   where 
     tiled       = Tall nmaster delta ratio                         -- Tall Layout
     threeCol    = ThreeColMid nmaster delta ratio                  -- Three columns layout
@@ -97,13 +113,21 @@ myLayout = spacing 8 $ tiled ||| Mirror tiled ||| Full ||| threeCol
     delta       = 3/100                                            -- Percent of screen to increment by when resizing panes
 
 
+-- ===============================================
 -- Startup Hook
+-- ===============================================
 myStartupHook = do
  spawnOnce "picom" 
  spawnOnce "feh --bg-fill $HOME/Pictures/wallpapers/gustavedore.png" 
+ spawnOnce "betterlockscreen -u $HOME/Pictures/wallpapers/gustavedore.png"
  spawn "dunst -config $HOME/.config/dunst/dunstrc" 
  spawn "xset r rate 230 50"
  spawn "xrandr --output HDMI-1-0 --mode 1920x1080 --primary --rate 75 --left-of eDP-1 --auto"
+
+
+-- ===============================================
+--              XMOBAR CONFIGURATION
+-- ===============================================
 
 -- Xmobar Hook
 myXmobarPP :: PP
@@ -118,11 +142,9 @@ myXmobarPP = def
     , ppExtras          = [logTitles formatFocused formatUnfocused]
     }
   where
-    formatFocused   = wrap (white    "[") (white    "]") . white . ppWindow
-    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
+    formatFocused   = wrap (white    "[") (white    "]") . white        . ppWindow
+    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . lowWhite     . ppWindow
 
-    -- | Windows should have *some* title, which should not not exceed a
-    -- sane length.
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 20
 
@@ -135,12 +157,46 @@ myXmobarPP = def
     lowWhite = xmobarColor "#817E77" ""
 
 
+-- Dynamic Xmobar
+barSpawner :: ScreenId -> X StatusBarConfig
+barSpawner 0 = pure xmobarTop
+barSpawner 1 = pure xmobarSec
+barSpawner _ = mempty
 
--- Main Function
+xmobarTop :: StatusBarConfig
+xmobarTop = statusBarPropTo "_XMONAD_LOG_1"
+  "xmobar -x 0 $HOME/.config/xmonad/xmobarrc"
+  (pure myXmobarPP)
+
+xmobarSec :: StatusBarConfig
+xmobarSec = statusBarPropTo "_XMONAD_LOG_3"
+  "xmobar -x 1 $HOME/.config/xmonad/xmobarrc"
+  (pure myXmobarPP)
+
+
+-- ===============================================
+--                Main Configuration
+-- ===============================================
+myConfig = def
+  { modMask       = mod4Mask -- Setting Super as mod key
+  , layoutHook    = myLayout
+  , manageHook    = myManageHook
+  , startupHook   = myStartupHook
+  , workspaces    = myWorkspaces 
+  , logHook       = updatePointer (0.5, 0.5) (0, 0)
+  , normalBorderColor   = myUnfocusedColor
+  , focusedBorderColor  = myFocusedColor
+  }
+  `additionalKeysP` myKeys
+
+
+-- ===============================================
+--                  Main Function
+-- ===============================================
 main :: IO ()
 main = xmonad 
      . ewmhFullscreen 
      . ewmh 
      . withEasySB(statusBarProp "xmobar $HOME/dotfiles/.config/xmonad/xmobarrc" (pure myXmobarPP)) defToggleStrutsKey
-     . dynamicEasySBs          barSpawner
+     . dynamicEasySBs barSpawner
      $ myConfig
