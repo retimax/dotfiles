@@ -1,17 +1,18 @@
 Config 
   { overrideRedirect = True
-  , font     = "FiraCode Nerd Font 11"
+  , font     = "FiraCode Nerd Font 10"
   , bgColor  = "#0F0F0F"
   , fgColor  = "#dbdad2"
-  , position = TopH 25
+  , position = TopH 22
+  , persistent = False
   , commands = 
-      [ Run MultiCpu
-          [ "-L", "3"
-          , "-H", "50"
-          , "--high"  , "red"
-          , "--normal", "#dbdad2"
-          , "--template", "CPU: <total>%"
-          ] 10
+      [ Run Cpu
+        [ "-L", "3"
+        , "-H", "50"
+        , "--high"  , "red"
+        , "--normal", "#dbdad2"
+        , "--template", "CPU: <total>%"
+        ] 50
       , Run Alsa "default" "Master"
           [ "--template", "<volumestatus>"
           , "--suffix"  , "True"
@@ -32,5 +33,5 @@ Config
       ]
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = "%XMonadLog% }{ %alsa:default:Master% | %battery% | %multicpu% | %memory% | %date%"
+  , template = "%XMonadLog% }{ %alsa:default:Master% | %battery% | %cpu% | %memory% | %date%"
   }

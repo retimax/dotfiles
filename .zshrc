@@ -26,6 +26,7 @@ export PATH="$HOME/.choosenim/current/bin:$PATH"  # This one might not support X
 export PATH="$GEM_HOME/bin:$PATH"  # Using XDG-compliant gem path
 export PATH="$CARGO_HOME/bin:$PATH"  # Using XDG-compliant cargo path
 export PATH="$PYENV_ROOT/bin:$PATH"  # Using XDG-compliant pyenv path
+export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 
 # Oh My Zsh installation - FIXED to use XDG-compliant path
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
@@ -213,6 +214,7 @@ alias py3='python3'
 alias crackmes='cd Desktop/reversing/crackmes'
 alias dotfiles='cd $HOME/dotfiles'
 alias odat='/home/r0lk444/Desktop/offSecTools/odat-libc2.17-x86_64/odat-libc2.17-x86_64'
+alias ff="fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}'"
 
 # Load XDG aliases if they exist
 [[ -f "$XDG_CONFIG_HOME/xdg-aliases" ]] && source "$XDG_CONFIG_HOME/xdg-aliases"
@@ -220,3 +222,6 @@ alias odat='/home/r0lk444/Desktop/offSecTools/odat-libc2.17-x86_64/odat-libc2.17
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # FIXED - Using XDG-compliant path for p10k config
 [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
+
+# Created by `pipx` on 2026-03-10 20:46:44
+export PATH="$PATH:/home/r0lk444/.local/bin"

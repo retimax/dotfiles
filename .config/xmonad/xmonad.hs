@@ -1,5 +1,10 @@
 import XMonad
 import System.IO (hPutStrLn)
+import Graphics.X11.Xrandr
+import Graphics.X11.Xlib.Extras
+import Data.Monoid
+import Data.IORef
+import System.IO.Unsafe (unsafePerformIO)
 
 import XMonad.Actions.UpdatePointer
 import XMonad.Util.Run
@@ -13,13 +18,17 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.SideBorderDecoration
+import XMonad.Layout.ResizableTile
 
 -- Hooks
-import XMonad.Hooks.EwmhDesktops    -- Better handling of windows/panels
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP (dynamicLogWithPP)
+
+import qualified XMonad.StackSet as W
+import Data.Time.Clock.POSIX (getPOSIXTime)
 
 
 -- ===============================================
@@ -43,7 +52,7 @@ myWorkspaces =
   ["1:www"
   , "2:dev"
   , "3:term"
-  , "4:ref"
+  , "4:vmw"
   , "5:git" 
   , "6:note"
   , "7:mpd"
@@ -71,6 +80,7 @@ myKeys =
     -- Rofi
   , ("M-d",           spawn "$HOME/.config/rofi/launchers/type-1/launcher.sh")
   , ("M-x",           spawn "$HOME/.config/rofi/powermenu/type-1/powermenu.sh")
+  , ("M-S-d",         spawn "$HOME/.config/rofi/applets/bin/projects.sh")
     
     -- Special Keys
   , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
@@ -83,9 +93,17 @@ myKeys =
 
     -- Apps
   , ("M-o",    spawn "obsidian")
+  , ("M-S-b",    spawn "blueman-manager")
 
     -- Scripts
-  , ("M-<Tab>", spawn "$HOME/dotfiles/scripts/toggle_keyboard")
+  , ("M-<Tab>", spawn "$HOME/dotfiles/.config/bin/toggle_keyboard")
+    
+    -- Manual monitor detection (útil para debugging)
+  , ("M-S-m", spawn "$HOME/.config/xmonad/scripts/detect-monitors.sh")
+
+    -- ResizableTall keybinds
+  , ("M-C-j", sendMessage MirrorShrink)
+  , ("M-C-k", sendMessage MirrorExpand)
   ]
 
 
@@ -97,6 +115,8 @@ myManageHook = composeAll
   [ className =? "Blueman-manager"      --> doCenterFloat
   , className =? "xmessage"             --> doCenterFloat
   , className =? "pavucontrol"          --> doCenterFloat
+  , className =? "VirtualBox Machine"   --> doFullFloat
+  , title     =? "Media viewer"         --> doCenterFloat
   , isDialog                            --> doFloat 
   ]
 
@@ -106,23 +126,60 @@ myManageHook = composeAll
 -- ===============================================
 myLayout = smartBorders . spacing 8 $ tiled ||| Mirror tiled ||| noBorders Full ||| threeCol
   where 
-    tiled       = Tall nmaster delta ratio                         -- Tall Layout
-    threeCol    = ThreeColMid nmaster delta ratio                  -- Three columns layout
-    nmaster     = 1                                                -- Default number of windows in the master pane
-    ratio       = 1/2                                              -- Default proportion of screen occupied by master pane
-    delta       = 3/100                                            -- Percent of screen to increment by when resizing panes
+    tiled       = ResizableTall nmaster delta ratio []
+    threeCol    = ThreeColMid nmaster delta ratio
+    nmaster     = 1
+    ratio       = 1/2
+    delta       = 3/100
+
+
+-- ===============================================
+-- Event Hook - Detección Dinámica de Monitores con Throttle
+-- ===============================================
+
+-- Variable global para throttle (solo se ejecuta cada 5 segundos)
+{-# NOINLINE lastMonitorEventTime #-}
+lastMonitorEventTime :: IORef Integer
+lastMonitorEventTime = unsafePerformIO $ newIORef 0
+
+myEventHook :: Event -> X All
+myEventHook (RRScreenChangeNotifyEvent {}) = do
+    currentTime <- io $ round <$> getPOSIXTime
+    lastTime <- io $ readIORef lastMonitorEventTime
+    
+    -- Solo ejecutar si han pasado más de 5 segundos
+    if (currentTime - lastTime) > 5
+        then do
+            io $ writeIORef lastMonitorEventTime currentTime
+            spawn "$HOME/.config/xmonad/scripts/detect-monitors.sh"
+            refresh
+            return (All True)
+        else do
+            return (All True)  -- Ignorar evento
+            
+myEventHook _ = return (All True)
 
 
 -- ===============================================
 -- Startup Hook
 -- ===============================================
+myStartupHook :: X ()
 myStartupHook = do
- spawnOnce "picom" 
- spawnOnce "feh --bg-fill $HOME/Pictures/wallpapers/gustavedore.png" 
- spawnOnce "betterlockscreen -u $HOME/Pictures/wallpapers/gustavedore.png"
- spawn "dunst -config $HOME/.config/dunst/dunstrc" 
- spawn "xset r rate 230 50"
- spawn "xrandr --output HDMI-1-0 --mode 1920x1080 --primary --rate 75 --left-of eDP-1 --auto"
+  io setupScreenNotify
+  spawnOnce "picom" 
+  spawn "$HOME/.config/xmonad/scripts/detect-monitors.sh"
+  spawnOnce "feh --bg-fill $HOME/Pictures/wallpapers/gustavedore.png" 
+  spawnOnce "betterlockscreen -u $HOME/Pictures/wallpapers/gustavedore.png"
+  spawn "dunst -config $HOME/.config/dunst/dunstrc" 
+  spawn "xset r rate 230 50"
+
+-- Configurar notificaciones de cambios de pantalla
+setupScreenNotify :: IO ()
+setupScreenNotify = do
+  dpy <- openDisplay ""
+  root <- rootWindow dpy (defaultScreen dpy)
+  xrrSelectInput dpy root rrScreenChangeNotifyMask
+  sync dpy False
 
 
 -- ===============================================
@@ -178,10 +235,11 @@ xmobarSec = statusBarPropTo "_XMONAD_LOG_3"
 --                Main Configuration
 -- ===============================================
 myConfig = def
-  { modMask       = mod4Mask -- Setting Super as mod key
+  { modMask       = mod4Mask
   , layoutHook    = myLayout
   , manageHook    = myManageHook
   , startupHook   = myStartupHook
+  , handleEventHook = myEventHook
   , workspaces    = myWorkspaces 
   , logHook       = updatePointer (0.5, 0.5) (0, 0)
   , normalBorderColor   = myUnfocusedColor

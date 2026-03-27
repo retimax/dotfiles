@@ -1,11 +1,11 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    c_cpp = { "clang-format" },
     c = { "clang_format" },
     cpp = { "clang_format" },
     go = { "gofumpt", "goimports-reviser", "golines" },
-    python = { "isort", "black" },
+    -- Mantenemos ruff para ambas tareas
+    python = { "ruff_organize_imports", "ruff_format" },
     css = { "prettier" },
     html = { "prettier" },
     javascript = { "prettier" },
@@ -14,28 +14,26 @@ local options = {
   },
 
   formatters = {
-    -- Go
+    -- --- Go ---
     ["goimports-reviser"] = {
       prepend_args = { "-rm-unused" },
     },
     golines = {
       prepend_args = { "--max-len=80" },
     },
-    -- Python
-    black = {
-      prepend_args = {
-        "--fast",
-        "--line-length",
-        "80",
-      },
+
+    -- --- Python (Ruff) ---
+    -- Definición manual para evitar errores de argumentos inesperados o duplicados
+    ruff_format = {
+      command = "ruff",
+      args = { "format", "--line-length", "80", "--stdin-filename", "$FILENAME", "-" },
     },
-    isort = {
-      prepend_args = {
-        "--profile",
-        "black",
-      },
+    ruff_organize_imports = {
+      command = "ruff",
+      args = { "check", "--select", "I", "--fix", "--stdin-filename", "$FILENAME", "-" },
     },
-    -- C / C++
+
+    -- --- C / C++ ---
     clang_format = {
       prepend_args = {
         "-style={ \
@@ -44,15 +42,15 @@ local options = {
         UseTab: Never, \
         AccessModifierOffset: 0, \
         IndentAccessModifiers: true, \
-        PackConstructorInitializers: Never \
+        PackConstructorInitializers: Never, \
+        ReflowComments: false, \
         }",
       },
     },
   },
 
   format_on_save = {
-    --   -- These options will be passed to conform.format()
-    timeout_ms = 500,
+    timeout_ms = 1000,
     lsp_fallback = true,
   },
 }

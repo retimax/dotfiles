@@ -1,8 +1,8 @@
-# TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+ # TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
-[mgr]
+[manager]
 ratio          = [ 1, 4, 3 ]
 sort_by        = "alphabetical"
 sort_sensitive = false
@@ -78,7 +78,7 @@ image_bound      = [ 0, 0 ]
 suppress_preload = false
 
 [plugin]
-prepend_fetchers = [
+fetchers = [
 	# Mimetype
 	{ id = "mime", name = "*", run = "mime", prio = "high" },
 	# Git
